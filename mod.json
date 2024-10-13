@@ -5,7 +5,7 @@
         "win": "2.206",
         "mac": "2.206"
     },
-    "version": "v1.0.0",
+    "version": "v1.0.1",
     "id": "hiimjustin000.developer_badges",
     "name": "Developer Badges",
     "developer": "hiimjustin000",
@@ -27,6 +27,60 @@
             "DB_BadgeSheet": [
                 "resources/BadgeSheet/*.png"
             ]
+        }
+    },
+    "settings": {
+        "mod-developer-color-toggle": {
+            "name": "Mod Developer Comment Color",
+            "description": "Enable the mod developer comment color.",
+            "type": "bool",
+            "default": true
+        },
+        "mod-developer-color": {
+            "name": "Mod Developer Comment Color",
+            "description": "The color of mod developer comments.",
+            "type": "color",
+            "enable-if": "mod-developer-color-toggle",
+            "default": "#A379C0"
+        },
+        "verified-developer-color-toggle": {
+            "name": "Verified Developer Comment Color",
+            "description": "Enable the verified developer comment color.",
+            "type": "bool",
+            "default": true
+        },
+        "verified-developer-color": {
+            "name": "Verified Developer Comment Color",
+            "description": "The color of verified developer comments.",
+            "type": "color",
+            "enable-if": "verified-developer-color-toggle",
+            "default": "#CA869F"
+        },
+        "index-staff-color-toggle": {
+            "name": "Index Staff Comment Color",
+            "description": "Enable the index staff comment color.",
+            "type": "bool",
+            "default": true
+        },
+        "index-staff-color": {
+            "name": "Index Staff Comment Color",
+            "description": "The color of index staff comments.",
+            "type": "color",
+            "enable-if": "index-staff-color-toggle",
+            "default": "#DF8F8F"
+        },
+        "lead-developer-color-toggle": {
+            "name": "Lead Developer Comment Color",
+            "description": "Enable the lead developer comment color.",
+            "type": "bool",
+            "default": true
+        },
+        "lead-developer-color": {
+            "name": "Lead Developer Comment Color",
+            "description": "The color of lead developer comments.",
+            "type": "color",
+            "enable-if": "lead-developer-color-toggle",
+            "default": "#E1B29B"
         }
     },
     "links": {
