@@ -159,7 +159,11 @@ class $modify(DBCommentCell, CommentCell) {
 
         auto badge = *it;
         auto badgeSprite = CCSprite::createWithSpriteFrameName(fmt::format("badge{:02}.png"_spr, (int)badge.badge).c_str());
-        badgeSprite->setScale(0.7f);
+        if (usernameMenu->getChildByID("username-button")->getChildByTag(1)->getScale() == 0.5f) {
+            badgeSprite->setScale(0.55f);
+        } else {
+            badgeSprite->setScale(0.7f);
+        }
         auto badgeButton = CCMenuItemSpriteExtra::create(
             badgeSprite,
             this,
