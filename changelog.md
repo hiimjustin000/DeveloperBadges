@@ -1,4 +1,7 @@
 # Developer Badges Changelog
+## v1.0.2 (2024-10-28)
+- Redesigned the developer badges to be more visually appealing
+
 ## v1.0.1 (2024-10-12)
 - Added the ability to customize comment coloring based on a user's badges
 - Fixed a bug where reloading the page would add duplicate badges to a user's profile

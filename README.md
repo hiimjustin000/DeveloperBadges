@@ -6,7 +6,7 @@ A mod that gives badges to Geode mod developers.
 - Comment coloring based on a user's badges
 
 ## Credits
-- [Krintop](https://gdbrowser.com/u/7242014) - Designer of the mod's textures
+- [Brift](https://gdbrowser.com/u/14114548) - Designer of the mod's textures
 - [hiimjustin000](https://gdbrowser.com/u/7466002) - Creator of the mod
 
 ## Badges
