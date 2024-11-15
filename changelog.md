@@ -1,4 +1,7 @@
 # Developer Badges Changelog
+## v1.0.3 (2024-11-15)
+- Ported to Geometry Dash v2.207
+
 ## v1.0.2 (2024-10-28)
 - Redesigned the developer badges to be more visually appealing
 

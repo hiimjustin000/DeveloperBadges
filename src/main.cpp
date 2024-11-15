@@ -1,4 +1,3 @@
-#include <Geode/Geode.hpp>
 #include <Geode/utils/web.hpp>
 
 using namespace geode::prelude;
@@ -21,8 +20,6 @@ std::vector<DeveloperBadge> DEVELOPER_BADGES;
 bool TRIED_LOADING = false;
 
 #define BADGE_URL "https://raw.githubusercontent.com/hiimjustin000/developer-badges/refs/heads/master/badges.json"
-
-#define PROPERTY_OR_DEFAULT(obj, prop, isFunc, asFunc, def) (obj.contains(prop) && obj[prop].isFunc() ? obj[prop].asFunc() : def)
 
 void showBadgeInfo(std::string username, CCObject* badgeButton) {
     auto badgeName = "";
@@ -78,23 +75,23 @@ class $modify(DBMenuLayer, MenuLayer) {
 
         static std::optional<web::WebTask> task = std::nullopt;
         task = web::WebRequest().get(BADGE_URL).map([](web::WebResponse* res) {
-            if (res->ok()) {
-                auto str = res->string().value();
-                std::string error;
-                auto json = matjson::parse(str, error).value_or(matjson::Array());
-                if (!error.empty()) log::error("Failed to parse developer badges: {}", error);
-                if (json.is_array()) for (auto& badge : json.as_array()) {
-                    auto id = PROPERTY_OR_DEFAULT(badge, "id", is_number, as_int, 0);
-                    if (id > 0) DEVELOPER_BADGES.push_back({
-                        .id = id,
-                        .name = PROPERTY_OR_DEFAULT(badge, "name", is_string, as_string, ""),
-                        .badge = (BadgeType)PROPERTY_OR_DEFAULT(badge, "badge", is_number, as_int, 0)
-                    });
-                }
+            if (!res->ok()) {
+                queueInMainThread([] { Notification::create("Developer Badges Load Failed", NotificationIcon::Error)->show(); });
+                task = std::nullopt;
+                return *res;
             }
-            else Loader::get()->queueInMainThread([] {
-                Notification::create("Developer Badges Load Failed", NotificationIcon::Error)->show();
-            });
+
+            if (!res->json().isOk()) log::error("Failed to parse developer badges: {}", res->json().unwrapErr());
+
+            auto json = res->json().unwrapOr(std::vector<matjson::Value>());
+            if (json.isArray()) for (auto& badge : json.asArray().unwrap()) {
+                int id = badge["id"].asInt().unwrapOr(0);
+                if (id > 0) DEVELOPER_BADGES.push_back({
+                    .id = id,
+                    .name = badge["name"].asString().unwrapOr(""),
+                    .badge = (BadgeType)badge["badge"].asInt().unwrapOr(0)
+                });
+            }
 
             task = std::nullopt;
             return *res;
@@ -128,8 +125,7 @@ class $modify(DBProfilePage, ProfilePage) {
         auto badge = *it;
         auto badgeButton = CCMenuItemSpriteExtra::create(
             CCSprite::createWithSpriteFrameName(fmt::format("badge{:02}.png"_spr, (int)badge.badge).c_str()),
-            this,
-            menu_selector(DBProfilePage::onBadge)
+            this, menu_selector(DBProfilePage::onBadge)
         );
         badgeButton->setID("developer-badge"_spr);
         badgeButton->setTag((int)badge.badge);
@@ -160,11 +156,7 @@ class $modify(DBCommentCell, CommentCell) {
         auto badge = *it;
         auto badgeSprite = CCSprite::createWithSpriteFrameName(fmt::format("badge{:02}.png"_spr, (int)badge.badge).c_str());
         badgeSprite->setScale(0.7f);
-        auto badgeButton = CCMenuItemSpriteExtra::create(
-            badgeSprite,
-            this,
-            menu_selector(DBCommentCell::onBadge)
-        );
+        auto badgeButton = CCMenuItemSpriteExtra::create(badgeSprite, this, menu_selector(DBCommentCell::onBadge));
         badgeButton->setID("developer-badge"_spr);
         badgeButton->setTag((int)badge.badge);
         usernameMenu->addChild(badgeButton);
@@ -185,7 +177,7 @@ class $modify(DBCommentCell, CommentCell) {
         if (auto commentTextArea = static_cast<TextArea*>(m_mainLayer->getChildByID("comment-text-area")))
             commentTextArea->colorAllCharactersTo(getCommentColor(badge.badge));
 
-        if (auto commentEmojisArea = static_cast<CCLabelBMFont*>(m_mainLayer->getChildByID("thesillydoggo.comment_emojis/comment-text-area"))) {
+        if (auto commentEmojisArea = m_mainLayer->getChildByID("thesillydoggo.comment_emojis/comment-text-area")) {
             for (auto i = 0; i < commentEmojisArea->getChildrenCount(); i++) {
                 if (auto child = typeinfo_cast<CCLabelBMFont*>(commentEmojisArea->getChildren()->objectAtIndex(i)))
                     child->setColor(getCommentColor(badge.badge));
