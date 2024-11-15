@@ -1,5 +1,5 @@
 # Developer Badges Changelog
-## v1.0.3 (2024-11-15)
+## v1.0.3-beta.1 (2024-11-15)
 - Ported to Geometry Dash v2.207
 
 ## v1.0.2 (2024-10-28)
