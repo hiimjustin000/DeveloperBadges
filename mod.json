@@ -1,11 +1,11 @@
 {
-    "geode": "4.0.0-alpha.1",
+    "geode": "4.0.0-beta.1",
     "gd": {
         "android": "2.2074",
         "win": "2.2074",
         "mac": "2.2074"
     },
-    "version": "v1.0.3-beta.1",
+    "version": "v1.0.3",
     "id": "hiimjustin000.developer_badges",
     "name": "Developer Badges",
     "developer": "hiimjustin000",
